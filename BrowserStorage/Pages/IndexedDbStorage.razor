@@ -22,14 +22,6 @@
     public string BookName { get; set; } = "";
     public string StoredValue { get; set; } = "";
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if(firstRender)
-        {
-            await IndexedDbAccessor.InitializeAsync();
-        }
-    }
-
     public async Task SetValueAsync()
     {
         await IndexedDbAccessor.SetValueAsync("books", new { Id = BookId, Name = BookName });
