@@ -1,0 +1,45 @@
+﻿@page "/session-storage"
+@using BrowserStorage.Utilities;
+@inject SessionStorageAccessor SessionStorageAccessor
+
+<form>
+    <label>
+        Key
+        <input type="text" @bind-value="Key" />
+    </label>
+    <label>
+        Value
+        <inputtype="text" @bind-value="Value" />
+    </label>
+    <button type="button" @onclick="SetValueAsync">Set Value</button>
+</form>
+<div>Stored Value: @StoredValue</div>
+<button type="button" @onclick="GetValueAsync">Get Value</button>
+<button type="button" @onclick="RemoveAsync">Remove Value</button>
+<button type="button" @onclick="ClearAllAsync">Clear All</button>
+
+@code {
+    public string Key { get; set; } = "";
+    public string Value { get; set; } = "";
+    public string StoredValue { get; set; } = "";
+
+    public async Task SetValueAsync()
+    {
+        await SessionStorageAccessor.SetValueAsync(Key, Value);
+    }
+
+    public async Task GetValueAsync()
+    {
+        StoredValue = await SessionStorageAccessor.GetValueAsync<string>(Key);
+    }
+
+    public async Task RemoveAsync()
+    {
+        await SessionStorageAccessor.RemoveAsync(Key);
+    }
+
+    public async Task ClearAllAsync()
+    {
+        await SessionStorageAccessor.Clear();
+    }
+}

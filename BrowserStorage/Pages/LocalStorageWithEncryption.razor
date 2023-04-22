@@ -1,0 +1,40 @@
+﻿@page "/local-storage-with-encryption"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
+
+<form>
+    <label>
+        Key
+        <input type="text" @bind-value="Key" />
+    </label>
+    <label>
+        Value
+        <input type="text" @bind-value="Value" />
+    </label>
+    <button type="button" @onclick="SetValueAsync">Set Value</button>
+</form>
+<div>Stored Value: @StoredValue</div>
+<button type="button" @onclick="GetValueAsync">Get Value</button>
+<button type="button" @onclick="RemoveAsync">Remove Value</button>
+
+@code {
+    public string Key { get; set; } = "";
+    public string Value { get; set; } = "";
+    public string StoredValue { get; set; } = "";
+
+    public async Task SetValueAsync()
+    {
+        await ProtectedLocalStorage.SetAsync(Key, Value);
+    }
+
+    public async Task GetValueAsync()
+    {
+        var result = await ProtectedLocalStorage.GetAsync<string>(Key);
+        StoredValue = result.Success ? result.Value! : "Failed to fetch result";
+    }
+
+    public async Task RemoveAsync()
+    {
+        await ProtectedLocalStorage.DeleteAsync(Key);
+    }
+}

@@ -1,0 +1,52 @@
+﻿@page "/memory-storage"
+@using BrowserStorage.Utilities;
+@inject MemoryStorageUtility MemoryStorageUtility
+
+<form>
+    <label>
+        Key
+        <input type="text" @bind-value="Key" />
+    </label>
+    <label>
+        Value
+        <input type="text" @bind-value="Value" />
+    </label>
+    <button type="button" @onclick="SetValue">Set Value</button>
+</form>
+<div>Stored Value: @StoredValue</div>
+<button type="button" @onclick="GetValue">Get Value</button>
+<button type="button" @onclick="Remove">Remove Value</button>
+<button type="button" @onclick="ClearAll">Clear All</button>
+
+@code {
+    public string Key { get; set; } = "";
+    public string Value { get; set; } = "";
+    public string StoredValue { get; set; } = "";
+
+    public void SetValue()
+    {
+        MemoryStorageUtility.Storage[Key] = Value;
+    }
+
+    public void GetValue()
+    {
+        if (MemoryStorageUtility.Storage.TryGetValue(Key, out var value))
+        {
+            StoredValue = value.ToString()!;
+        }
+        else
+        {
+            StoredValue = "";
+        }
+    }
+
+    public void Remove()
+    {
+        MemoryStorageUtility.Storage.Remove(Key);
+    }
+
+    public void ClearAll()
+    {
+        MemoryStorageUtility.Storage.Clear();
+    }
+}

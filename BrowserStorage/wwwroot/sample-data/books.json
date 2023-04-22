@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Blazor Server .NET 6 Fundamentals",
+        "publisher": "Blazor School"
+    },
+    {
+        "name": "Blazor WebAssembly .NET 6 Fundamentals",
+        "publisher": "Blazor School"
+    },
+    {
+        "name": "Advanced Blazor Server .NET 6",
+        "publisher": "Blazor School"
+    },
+    {
+        "name": "Advanced Blazor WebAssembly .NET 6",
+        "publisher": "Blazor School"
+    },
+    {
+        "name": "72 Tricks for .NET Developers",
+        "publisher": "Blazor School"
+    }
+]

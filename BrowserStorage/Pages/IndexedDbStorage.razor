@@ -1,0 +1,43 @@
+﻿@page "/indexed-db-storage"
+@using BrowserStorage.Utilities;
+@using System.Text.Json;
+@inject IndexedDbAccessor IndexedDbAccessor
+
+<form>
+    <label>
+        Book ID:
+        <input type="number" @bind-value="BookId" />
+    </label>
+    <label>
+        Book Name:
+        <input type="text" @bind-value="BookName" />
+    </label>
+    <button type="button" @onclick="SetValueAsync">Set Value</button>
+</form>
+<div>Stored Value: @StoredValue</div>
+<button type="button" @onclick="GetValueAsync">Get Value</button>
+
+@code {
+    public int BookId { get; set; }
+    public string BookName { get; set; } = "";
+    public string StoredValue { get; set; } = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await IndexedDbAccessor.InitializeAsync();
+        }
+    }
+
+    public async Task SetValueAsync()
+    {
+        await IndexedDbAccessor.SetValueAsync("books", new { Id = BookId, Name = BookName });
+    }
+
+    public async Task GetValueAsync()
+    {
+        JsonDocument storedBook = await IndexedDbAccessor.GetValueAsync<JsonDocument>("books", BookId);
+        StoredValue = storedBook?.RootElement.GetProperty("name").GetString() ?? "Not found!";
+    }
+}
